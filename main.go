@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"time"
 )
 
 func main() {
@@ -27,21 +28,33 @@ func main() {
 		return
 	}
 
+	timer := time.NewTimer(5 * time.Second)
+
 	for _, record := range records {
-		var respuesta string
 
+		answerCh := make(chan string)
 		fmt.Printf("¿%s? ", record[0])
-		fmt.Scanln(&respuesta)
 
-		if respuesta == record[1] {
-			fmt.Printf("Correctooou \n ")
-			correctas++
-		} else {
-			fmt.Printf("Maaal \n ")
+		go func() {
+			var respuesta string
+			fmt.Scanln(&respuesta)
+			answerCh <- respuesta
+		}()
+
+		select {
+		case respuesta := <-answerCh:
+			if respuesta == record[1] {
+				fmt.Println("Correctooou")
+				correctas++
+			} else {
+				fmt.Println("Maaal")
+			}
+		case <-timer.C:
+			fmt.Println("\n⏰ ¡Tiempo terminado!")
+			fmt.Printf("Respuestas correctas: %d de %d\n", correctas, len(records))
+			return
 		}
 
 	}
-	total := len(records)
-	fmt.Printf("Respuestas correctas: %d de %d\n", correctas, total)
 
 }
