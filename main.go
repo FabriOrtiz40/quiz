@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"os"
 )
@@ -9,7 +10,10 @@ import (
 func main() {
 	correctas := 0
 
-	file, err := os.Open("problems.csv")
+	csvFilename := flag.String("csv", "problems.csv", "Archivo CSV con preguntas")
+	flag.Parse()
+
+	file, err := os.Open(*csvFilename)
 	if err != nil {
 		fmt.Println("Error al abrir el archivo:", err)
 		return
