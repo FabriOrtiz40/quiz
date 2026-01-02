@@ -12,6 +12,7 @@ func main() {
 	correctas := 0
 
 	csvFilename := flag.String("csv", "problems.csv", "Archivo CSV con preguntas")
+	timeLimit := flag.Int("limit", 30, "Tiempo límite del quiz en segundos")
 	flag.Parse()
 
 	file, err := os.Open(*csvFilename)
@@ -28,7 +29,9 @@ func main() {
 		return
 	}
 
-	timer := time.NewTimer(5 * time.Second)
+	fmt.Println("¡Presione Enter para comenzar el quiz!")
+	fmt.Scanln()
+	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
 
 	for _, record := range records {
 
