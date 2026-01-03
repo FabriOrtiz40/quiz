@@ -5,7 +5,9 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 	"time"
+	"math/rand"
 )
 
 func main() {
@@ -45,8 +47,11 @@ func main() {
 		}()
 
 		select {
+
 		case respuesta := <-answerCh:
-			if respuesta == record[1] {
+			user := strings.TrimSpace(strings.ToLower(respuesta))
+			correcta := strings.TrimSpace(strings.ToLower(record[1]))
+			if user == correcta {
 				fmt.Println("Correctooou")
 				correctas++
 			} else {
