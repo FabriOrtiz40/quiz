@@ -73,5 +73,6 @@ func main() {
 		}
 
 	}
+	fmt.Printf("Respuestas correctas: %d de %d\n", correctas, len(records))
 
 }
